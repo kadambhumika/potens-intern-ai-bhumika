@@ -1,0 +1,27 @@
+{
+  "input": "We need to cancel our enterprise billing plan immediately, we were charged an unexpected $500 overage fee.",
+  "agent_output": {
+    "category": "Billing",
+    "priority": "P1",
+    "next_tool": "lookup_customer_record",
+    "reasoning": [
+      "Ingested incident report.",
+      "Scanning for keywords...",
+      "Found billing-related terms."
+    ],
+    "why": "Billing anomalies require pulling the customer's subscription record.",
+    "tool_result": {
+      "tool_name": "lookup_customer_record",
+      "status": "success",
+      "customer_data": {
+        "subscription_tier": "Enterprise Premium",
+        "account_status": "Active",
+        "recent_flags": [
+          "Multiple failed logins detected",
+          "Billing sync mismatch"
+        ],
+        "mfa_enabled": true
+      }
+    }
+  }
+}

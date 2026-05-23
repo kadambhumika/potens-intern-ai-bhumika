@@ -1,0 +1,39 @@
+{
+  "input": "A user is reporting that their Multi-Factor Authentication (MFA) token app is out of sync and they are locked out.",
+  "agent_output": {
+    "category": "Technical Issue",
+    "priority": "P2",
+    "next_tool": "search_past_incidents",
+    "reasoning": [
+      "Ingested incident report.",
+      "Scanning for keywords...",
+      "No specific category keyphrases found, defaulting to Technical Issue."
+    ],
+    "why": "Standard technical issue requires searching past incidents for a fix.",
+    "tool_result": {
+      "tool_name": "search_past_incidents",
+      "status": "success",
+      "matches_found": 3,
+      "data": [
+        {
+          "issue": "Employee unable to reset password",
+          "category": "Account Access",
+          "resolution": "Password reset token regenerated",
+          "similarity_score": 0.44508477486380743
+        },
+        {
+          "issue": "Multiple failed login attempts from overseas IP",
+          "category": "Security",
+          "resolution": "Forced password reset and MFA verification",
+          "similarity_score": 0.4115915968782932
+        },
+        {
+          "issue": "Dashboard crashes during file upload",
+          "category": "Technical Issue",
+          "resolution": "Frontend memory leak fixed",
+          "similarity_score": 0.3835023294203509
+        }
+      ]
+    }
+  }
+}

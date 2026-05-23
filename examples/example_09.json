@@ -1,0 +1,27 @@
+{
+  "input": "Security scan shows our main server has an open port 22 exposed to the public internet.",
+  "agent_output": {
+    "category": "Security",
+    "priority": "P1",
+    "next_tool": "lookup_customer_record",
+    "reasoning": [
+      "Ingested incident report.",
+      "Scanning for keywords...",
+      "Flagged security vulnerability indicators."
+    ],
+    "why": "Security issue detected; verifying customer account status.",
+    "tool_result": {
+      "tool_name": "lookup_customer_record",
+      "status": "success",
+      "customer_data": {
+        "subscription_tier": "Enterprise Premium",
+        "account_status": "Active",
+        "recent_flags": [
+          "Multiple failed logins detected",
+          "Billing sync mismatch"
+        ],
+        "mfa_enabled": true
+      }
+    }
+  }
+}

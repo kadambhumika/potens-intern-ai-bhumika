@@ -1,0 +1,28 @@
+{
+  "input": "Multiple failed login attempts detected from overseas IP and employees cannot access payroll dashboard.",
+  "agent_output": {
+    "category": "Security",
+    "priority": "P0",
+    "next_tool": "lookup_customer_record",
+    "reasoning": [
+      "Ingested incident report.",
+      "Scanning for keywords...",
+      "Flagged multiple security patterns.",
+      "Impacts payroll dashboard."
+    ],
+    "why": "P0 Security threat on payroll requires immediate customer record lookup to lock account.",
+    "tool_result": {
+      "tool_name": "lookup_customer_record",
+      "status": "success",
+      "customer_data": {
+        "subscription_tier": "Enterprise Premium",
+        "account_status": "Active",
+        "recent_flags": [
+          "Multiple failed logins detected",
+          "Billing sync mismatch"
+        ],
+        "mfa_enabled": true
+      }
+    }
+  }
+}

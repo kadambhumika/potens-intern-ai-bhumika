@@ -1,0 +1,19 @@
+{
+  "input": "I forgot my password and the reset email is not arriving to my corporate inbox.",
+  "agent_output": {
+    "category": "Account Access",
+    "priority": "P2",
+    "next_tool": "draft_acknowledgement",
+    "reasoning": [
+      "Ingested incident report.",
+      "Scanning for keywords...",
+      "Identified account access keyphrases."
+    ],
+    "why": "Standard password reset; drafting automated instructions.",
+    "tool_result": {
+      "tool_name": "draft_acknowledgement",
+      "status": "success",
+      "draft_text": "Your account access ticket is logged. Our support desk is verifying credentials and will provide recovery instructions soon."
+    }
+  }
+}

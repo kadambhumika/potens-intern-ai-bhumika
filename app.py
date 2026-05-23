@@ -280,8 +280,8 @@ if analyze_clicked or st.session_state.run_triage_trigger:
         # Extract fields from the agent response
         category = triage_report.get("category", "N/A")
         priority = triage_report.get("priority", "N/A")
-        confidence = triage_report.get("confidence", 0.0)
-        escalation = triage_report.get("human_escalation", False)
+        next_tool = triage_report.get("next_tool", "None")
+        tool_status = "Executed" if triage_report.get("tool_result") else "Failed"
         
         with metric_col1:
             st.metric(label="Incident Category", value=category)
@@ -290,64 +290,40 @@ if analyze_clicked or st.session_state.run_triage_trigger:
             st.metric(label="Priority Assignment", value=priority)
             
         with metric_col3:
-            st.metric(label="AI Confidence Index", value=f"{confidence * 100:.1f}%")
+            st.metric(label="Next Tool Selected", value=next_tool)
             
         with metric_col4:
             st.metric(
-                label="Human Escalation Status", 
-                value="🚨 ESCALATED" if escalation else "✅ SAFE"
+                label="Tool Execution Status", 
+                value="✅ " + tool_status
             )
 
-        # 2. CONFIDENCE PROGRESS BAR
-        # Renders a horizontal progress bar based on confidence value [0.0 - 1.0]
-        st.progress(float(confidence))
-        st.markdown(f"<p style='text-align: right; font-size: 0.8rem; color: #94a3b8;'>Confidence Rating: {confidence:.2f}</p>", unsafe_allow_html=True)
-        
-        # 3. DYNAMIC ESCALATION ALERTS
-        # Displays colored responsive boxes to draw operators' immediate attention
-        if escalation:
-            st.warning(
-                "⚠️ **ESCALATION PROTOCOL ENFORCED:** This ticket has been routed to **Human Engineering Tier 3 Support**.\n\n"
-                "*Rationale:* This is due to a Critical Priority (P0) classification, Security threat flags, "
-                "or an AI confidence index falling below the established 0.6 safety threshold."
-            )
-        else:
-            st.success(
-                "✅ **STANDARD OPERATIONS PROTOCOL:** Incident successfully classified and logged without escalation.\n\n"
-                "*Status:* Assigned resolution queues have been notified and standard corporate queues are operating normally."
-            )
+        # 2. AGENT EXPLANATION / WHY FIELD
+        st.info(
+            f"**Agent Decision Rationale (Why):** {triage_report.get('why', 'No explanation provided by agent.')}"
+        )
             
-        # 4. SIDE-BY-SIDE ANALYTICAL TELEMETRY
-        # Col 1: AI step-by-step reasoning. Col 2: FAISS similar matches.
+        # 3. SIDE-BY-SIDE ANALYTICAL TELEMETRY
+        # Col 1: AI step-by-step reasoning. Col 2: Tool result.
         telemetry_col1, telemetry_col2 = st.columns(2)
         
         with telemetry_col1:
             st.markdown("#### 📋 AI Reasoning Timeline")
             # We wrap the timeline inside an st.expander, so the dashboard looks clean
             # but allows deep-dive inspection of how the AI made its decisions.
-            with st.expander("🔍 View Step-by-Step Reasoning Trace (Auditable Trail)", expanded=True):
-                for step_num, step_desc in enumerate(triage_report.get("reasoning_trace", []), 1):
+            with st.expander("🔍 View Step-by-Step Reasoning Trace", expanded=True):
+                for step_num, step_desc in enumerate(triage_report.get("reasoning", []), 1):
                     # We format as a beautiful list
                     st.markdown(f"**Step {step_num}:** {step_desc}")
 
         with telemetry_col2:
-            st.markdown("#### 🔍 Similar Historical Incidents")
-            # Convert FAISS dictionary results directly to a Pandas DataFrame for professional rendering
-            similar_list = triage_report.get("similar_incidents", [])
+            st.markdown("#### 🛠️ Executed Tool Output")
+            tool_result = triage_report.get("tool_result", {})
             
-            if similar_list:
-                df = pd.DataFrame(similar_list)
-                
-                # Format dataframe column titles beautifully
-                df.columns = ["Historical Incident", "Category", "Resolution", "Semantic Score"]
-                
-                # Format scores to 2-decimal percentages for operational dashboards
-                df["Semantic Score"] = df["Semantic Score"].map(lambda x: f"{x * 100:.1f}%")
-                
-                # st.dataframe displays interactive tables supporting column sorting and cell copying
-                st.dataframe(df, use_container_width=True, hide_index=True)
+            if tool_result:
+                st.json(tool_result)
             else:
-                st.info("No matching historical logs found above standard similarity thresholds in memory.")
+                st.info("No tool execution output available.")
                 
 #         # 5. INTERACTIVE 2D SEMANTIC MEMORY SPACE MAP (PCA & ALTAIR)
 #         # This is an explainable AI feature that projects high-dimensional embeddings (384-dim)

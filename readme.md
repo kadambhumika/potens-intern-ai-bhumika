@@ -87,3 +87,28 @@ The application will be accessible in your web browser, typically at `http://loc
 *   **P0 (Critical)**: Broad outages, compromises, active threats.
 *   **P1 (Important)**: Blockers, active billing failures.
 *   **P2 (Normal)**: Non-blocking bugs, enhancements, feature requests.
+
+## 🏗️ Design Decisions
+
+*   **Real Tool Calling & Modular Design**: Integrated a proper multi-tool framework (`tools.py`) where the AI can autonomously select functions such as semantic searching, customer record lookup, or automated email drafting. 
+*   **LLM Choice (llama3-70b-8192)**: Using Groq for low-latency JSON mode response. Llama3-70B was chosen for its high reasoning capabilities to ensure accurate triage categorizations without hallucinations.
+*   **Semantic Over Lexical Search**: Using `sentence-transformers` and `FAISS` rather than simple keyword matching (like Elasticsearch). This allows the agent to recognize incidents described with different phrasing.
+*   **Strict Output Schema via JSON Mode**: The system guarantees deterministic structure (`{ category, priority, next_tool, reasoning, why, tool_result }`) by leveraging structured generation and fallback mock simulation.
+
+## 🚧 What is Broken or Unfinished
+
+*   **Mock Tool Implementations**: The `lookup_customer_record` tool currently returns a mock dictionary instead of querying a real PostgreSQL/Stripe database.
+*   **Altair Visualization**: The 2D PCA semantic projection map in the Streamlit UI is currently commented out due to dependency conflicts and edge-case rendering bugs.
+
+## 🔮 What I Would Build Next
+
+1.  **Human-in-the-Loop Triage Gate**: Implement an explicit Streamlit view where P0 or low-confidence issues wait for a manual admin "Approve/Reject" button before dispatching the ticket to Jira.
+2.  **Live Database Hooks**: Connect `lookup_customer_record` to actual CRM APIs (like Salesforce or HubSpot).
+3.  **Reranking Strategy**: Apply a Cross-Encoder to re-rank FAISS matches before feeding them to the LLM to improve context density.
+
+---
+
+## 🤖 AI USE LOG
+
+*   **Claude 3.5 Sonnet / Antigravity Agent**: ~15,000 tokens / 20 messages. Used to plan the architecture, generate the FAISS semantic search logic, enforce the JSON output schema, and align the project exactly with the internship guidelines (including the implementation of `tools.py`).
+*   **GitHub Copilot**: ~200 lines accepted. Used for boilerplate auto-completions in Streamlit UI configurations, generating the list of 10 example test cases, and standard Python exception handling.

@@ -1,0 +1,39 @@
+{
+  "input": "Can you please add a dark mode toggle to the main dashboard? The bright white is hurting our eyes during night shifts.",
+  "agent_output": {
+    "category": "Technical Issue",
+    "priority": "P2",
+    "next_tool": "search_past_incidents",
+    "reasoning": [
+      "Ingested incident report.",
+      "Scanning for keywords...",
+      "No specific category keyphrases found, defaulting to Technical Issue."
+    ],
+    "why": "Standard technical issue requires searching past incidents for a fix.",
+    "tool_result": {
+      "tool_name": "search_past_incidents",
+      "status": "success",
+      "matches_found": 3,
+      "data": [
+        {
+          "issue": "Request for dark mode feature",
+          "category": "Feature Request",
+          "resolution": "Forwarded to product roadmap",
+          "similarity_score": 0.6139290013442812
+        },
+        {
+          "issue": "Dashboard crashes during file upload",
+          "category": "Technical Issue",
+          "resolution": "Frontend memory leak fixed",
+          "similarity_score": 0.3781965390221127
+        },
+        {
+          "issue": "Payment deducted but subscription not activated",
+          "category": "Billing",
+          "resolution": "Manual subscription sync performed",
+          "similarity_score": 0.34365282208316517
+        }
+      ]
+    }
+  }
+}
