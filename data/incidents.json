@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "issue": "Multiple failed login attempts from overseas IP",
+    "category": "Security",
+    "resolution": "Forced password reset and MFA verification"
+  },
+  {
+    "id": 2,
+    "issue": "Payment deducted but subscription not activated",
+    "category": "Billing",
+    "resolution": "Manual subscription sync performed"
+  },
+  {
+    "id": 3,
+    "issue": "Dashboard crashes during file upload",
+    "category": "Technical Issue",
+    "resolution": "Frontend memory leak fixed"
+  },
+  {
+    "id": 4,
+    "issue": "Employee unable to reset password",
+    "category": "Account Access",
+    "resolution": "Password reset token regenerated"
+  },
+  {
+    "id": 5,
+    "issue": "Request for dark mode feature",
+    "category": "Feature Request",
+    "resolution": "Forwarded to product roadmap"
+  }
+]
